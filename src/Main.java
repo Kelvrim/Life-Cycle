@@ -55,6 +55,7 @@ public class Main {
         grid[0][0] = true;
         grid[0][1] = true;
         grid[1][0] = true;
+        grid[9][0] = true;
     }
 
     /**

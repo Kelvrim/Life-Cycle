@@ -5,30 +5,51 @@
 
 public class Grid {
     /** PROPERTIES ********************************************************************/
-    private int width = 10;
-    private int height = 10;
-    private final int MIN_ALLOWED_WIDTH = 10;
-    private final int MIN_ALLOWED_HEIGHT = 10;
+    private int rows = 10;
+    private int columns = 10;
+    private final int MIN_ALLOWED_ROWS = 10;
+    private final int MIN_ALLOWED_COLUMNS = 10;
     private Cell[][] grid;
 
     /** CONSTRUCTORS ******************************************************************/
-    public Grid(int width, int height) {
-        if (width < MIN_ALLOWED_WIDTH){
-            width = MIN_ALLOWED_WIDTH;
+    public Grid(int rows, int columns) {
+        if (rows < MIN_ALLOWED_ROWS){
+            rows = MIN_ALLOWED_ROWS;
         }
-        if (height < MIN_ALLOWED_HEIGHT){
-            height = MIN_ALLOWED_HEIGHT;
+        if (columns < MIN_ALLOWED_COLUMNS){
+            columns = MIN_ALLOWED_COLUMNS;
         }
-        this.width = width;
-        this.height = height;
+        this.rows = rows;
+        this.columns = columns;
 
-        grid = new Cell[width][height];
-
+        grid = new Cell[rows][columns];
         setToDefaultOrientation(grid);
+        setLivingNeighborOfEachCell(grid);
     }
 
     /** ACCESSORS *********************************************************************/
     /** MUTATORS **********************************************************************/
+
+    private void nextGeneration(Cell[][] grid){
+        Cell[][] futureGrid = grid;
+
+        for (int i = 0; i < width; i++){
+            for (int j = 0; j < height; j++){
+
+
+                // Cell must be subtracted from neighbors as it was counted before
+                if (grid[i][j]){
+                    aliveNeighbors--;
+                }
+
+                futureGrid[i][j] = applyRulesOfLife(grid, i, j, aliveNeighbors);
+            }
+        }
+
+        System.out.println("Next generation:");
+        printGrid(futureGrid);
+    }
+
     private void setToDefaultOrientation(Cell[][] grid) {
         grid[3][3].setLiving(true);
         grid[3][4].setLiving(true);
@@ -43,6 +64,48 @@ public class Grid {
     }
 
     /** HELPERS ***********************************************************************/
+    /**
+     * This should only be used for the first generation of the grid. After that,
+     * we'll call updateSurroundingCellsLivingCount() on each pass when necessary
+     * @param grid
+     */
+    private void setLivingNeighborOfEachCell(Cell[][] grid){
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                if (grid[i][j].isLiving()){
+                    updateSurroundingCellsLivingCount(grid, i, j);
+                }
+            }
+        }
+    }
 
+    /**
+     * Given the i and j location of a living Cell on grid, this updates the livingNeighbors
+     * property of all surrounding cells
+     * @param grid
+     * @param i
+     * @param j
+     */
+    private void updateSurroundingCellsLivingCount(Cell[][] grid, int i, int j) {
+        // If the Cell isn't living, it shouldn't have been called
+        if (!grid[i][j].isLiving()){
+            return;
+        }
+
+        // Iterates through each surrounding cell including the current cell
+        for (int rowOffset = -1; rowOffset <= 1; rowOffset++){
+            for (int columnOffset = -1; columnOffset < 2; columnOffset++){
+                int newRow = i + rowOffset;
+                int newColumn = j + columnOffset;
+
+                // Check if new position is contained in the grid
+                if ((newRow >= 0 && newRow < rows) && (newColumn >= 0 && newColumn < columns)){
+                    grid[newRow][newColumn].incrementLivingNeighbors();
+                }
+            }
+        }
+        // Since the cell in question is hit too, we decrement it once
+        grid[i][j].decrementLivingNeighbors();
+    }
 
 }
