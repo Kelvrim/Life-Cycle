@@ -1,4 +1,10 @@
+/**
+ * This class is currently UNIMPLEMENTED. It has certain properties and functions that
+ * clash with existing ones in Main.
+ */
+
 public class Cell {
+
     /** PROPERTIES ********************************************************************/
     private boolean isLiving;
     private int livingNeighbors;
@@ -26,6 +32,11 @@ public class Cell {
         this.livingNeighbors = livingNeighbors;
     }
 
+    /*
+     * The following two functions are to be used when generating the next grid:
+     * incrementing the livingNeighbors property when a cell is detected to be
+     * alive.
+     */
     public void incrementLivingNeighbors(){
         livingNeighbors++;
     }
