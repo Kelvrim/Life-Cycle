@@ -10,6 +10,8 @@ public class Cell {
     private int livingNeighbors;
 
     /** CONSTRUCTORS ******************************************************************/
+    public Cell(){}
+
     public Cell(boolean isLiving){
         this.isLiving = isLiving;
     }

@@ -14,6 +14,9 @@ public class Main {
             nextGeneration(grid);
             time--;
         }
+
+        Cell testCell = new Cell();
+        System.out.println(testCell.isLiving());
     }
 
     /**
