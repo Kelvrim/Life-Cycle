@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        int width = 10;
+        int width = 10;     // Width and height for the grid
         int height = 10;
         int time = 5;       // How many 'turns' we play for
 
@@ -10,7 +10,6 @@ public class Main {
         System.out.println("First generation:");
         printGrid(grid);
 
-        //System.out.print(countAliveNeighbors(grid, 6, 4));
         while (time != 0){
             nextGeneration(grid);
             time--;
@@ -50,6 +49,9 @@ public class Main {
         grid[6][5] = true;
         grid[6][6] = true;
         grid[7][4] = true;
+        grid[0][0] = true;
+        grid[0][1] = true;
+        grid[1][0] = true;
     }
 
     /**
@@ -104,14 +106,11 @@ public class Main {
                 if ((i + i2 >= 0 && i + i2 < grid.length) &&
                         (j + j2 >= 0 && j + j2 < grid[0].length)){
                     if (grid[i + i2][j + j2]){
-                         aliveNeighbors++; 
+                         aliveNeighbors++;
                     }
-
                 }
             }
         }
         return aliveNeighbors;
     }
-
-
 }
