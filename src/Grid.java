@@ -3,19 +3,26 @@
  * clash with existing ones in Main.
  */
 
-public class GridDimensions {
+public class Grid {
     /** PROPERTIES ********************************************************************/
-    private int width = 10;         // Not to be set less than 10
-    private int height = 10;        // Not to be set less than 10
-    private Cell[][] grid = new Cell[width][height];
+    private int width = 10;
+    private int height = 10;
+    private final int MIN_ALLOWED_WIDTH = 10;
+    private final int MIN_ALLOWED_HEIGHT = 10;
+    private Cell[][] grid;
 
     /** CONSTRUCTORS ******************************************************************/
-    public GridDimensions(int width, int height) throws Exception {
-        if (width < 10 || height < 10){
-            throw new Exception("Neither width or height can be less than 10");
+    public Grid(int width, int height) {
+        if (width < MIN_ALLOWED_WIDTH){
+            width = MIN_ALLOWED_WIDTH;
+        }
+        if (height < MIN_ALLOWED_HEIGHT){
+            height = MIN_ALLOWED_HEIGHT;
         }
         this.width = width;
         this.height = height;
+
+        grid = new Cell[width][height];
 
         setToDefaultOrientation(grid);
     }
