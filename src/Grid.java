@@ -35,17 +35,19 @@ public class Grid {
 
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
+                Cell currentCell = grid[i][j];
+                Cell futureCell = futureGrid[i][j];
 
-                if (grid[i][j].isLiving()){
+                if (currentCell.isLiving()){
                     updateSurroundingCellsLivingCount(grid, i, j);
                 }
 
-                futureGrid[i][j] = applyRulesOfLife(grid, i, j, aliveNeighbors);
+                futureGrid[i][j].setLiving(RuleSet.classicLife(grid[i][j]));
             }
         }
 
         System.out.println("Next generation:");
-        printGrid(futureGrid);
+        GridDisplay.printGrid(futureGrid);
     }
 
     private void setToDefaultOrientation(Cell[][] grid) {
