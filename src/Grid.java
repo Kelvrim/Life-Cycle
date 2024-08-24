@@ -33,13 +33,11 @@ public class Grid {
     private void nextGeneration(Cell[][] grid){
         Cell[][] futureGrid = grid;
 
-        for (int i = 0; i < width; i++){
-            for (int j = 0; j < height; j++){
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
 
-
-                // Cell must be subtracted from neighbors as it was counted before
-                if (grid[i][j]){
-                    aliveNeighbors--;
+                if (grid[i][j].isLiving()){
+                    updateSurroundingCellsLivingCount(grid, i, j);
                 }
 
                 futureGrid[i][j] = applyRulesOfLife(grid, i, j, aliveNeighbors);
