@@ -15,8 +15,9 @@ before I'm willing to make this repo public. They should (obviously) be prioriti
   - Relevant information being displayed in the corner (generation number, population, etc)
   - Pause/ Play buttons
   - 'Drawing' capabilities (choosing which cells are alive)
-- Actual graphics (not X's and O's being printed to the system lol
+- Actual graphics (not X's and O's being printed to the system lol)
 - Relatively clean code
+- An exe file
 
 
 ## Later down the road
