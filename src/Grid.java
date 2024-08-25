@@ -7,9 +7,10 @@ public class Grid {
     /** PROPERTIES ********************************************************************/
     private int rows = 10;
     private int columns = 10;
-    private final int MIN_ALLOWED_ROWS = 10;
-    private final int MIN_ALLOWED_COLUMNS = 10;
-    private Cell[][] grid;
+    private Cell[][] grid = new Cell[rows][columns];
+
+    public final int MIN_ALLOWED_ROWS = 10;
+    public final int MIN_ALLOWED_COLUMNS = 10;
 
     /** CONSTRUCTORS ******************************************************************/
     public Grid(int rows, int columns) {
@@ -22,15 +23,19 @@ public class Grid {
         this.rows = rows;
         this.columns = columns;
 
-        grid = new Cell[rows][columns];
+        //grid = new Cell[rows][columns];
+        fillGridWithCells();
         setToDefaultOrientation(grid);
         setLivingNeighborOfEachCell(grid);
     }
 
     /** ACCESSORS *********************************************************************/
-    /** MUTATORS **********************************************************************/
+    public Cell[][] getGrid() {
+        return grid;
+    }
 
-    private void nextGeneration(Cell[][] grid){
+    /** MUTATORS **********************************************************************/
+    public void nextGeneration(Cell[][] grid){
         Cell[][] futureGrid = grid;
 
         for (int i = 0; i < rows; i++){
@@ -48,6 +53,14 @@ public class Grid {
 
         System.out.println("Next generation:");
         GridDisplay.printGrid(futureGrid);
+    }
+
+    private void fillGridWithCells(){
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                grid[i][j] = new Cell(false);
+            }
+        }
     }
 
     private void setToDefaultOrientation(Cell[][] grid) {

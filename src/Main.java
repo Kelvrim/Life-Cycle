@@ -5,13 +5,19 @@ public class Main {
         int time = 5;       // How many 'turns' we play for
 
         boolean[][] grid = new boolean[width][height];
+        Grid newGrid = new Grid(width, height);
+
         defaultOrientation(grid);
 
-        System.out.println("First generation:");
+        System.out.println("GRID First generation:");
         printGrid(grid);
+
+        System.out.println("GRID First generation:");
+        GridDisplay.printGrid(newGrid.getGrid());
 
         while (time != 0){
             nextGeneration(grid);
+            newGrid.nextGeneration(newGrid.getGrid());
             time--;
         }
 
@@ -81,7 +87,7 @@ public class Main {
             }
         }
 
-        System.out.println("Next generation:");
+        System.out.println("GRID Next generation:");
         printGrid(futureGrid);
     }
 
