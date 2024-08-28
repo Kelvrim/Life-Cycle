@@ -7,7 +7,7 @@ public class Cell {
 
     /** PROPERTIES ********************************************************************/
     private boolean isLiving;
-    private int livingNeighbors;
+    private int livingNeighbors = 0;
 
     /** CONSTRUCTORS ******************************************************************/
     public Cell(){}

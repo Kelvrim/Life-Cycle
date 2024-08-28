@@ -6,6 +6,8 @@ public class Main {
 
         boolean[][] grid = new boolean[width][height];
         Grid newGrid = new Grid(width, height);
+        Cell[][] rfGrid = newGrid.getGrid();
+
 
         defaultOrientation(grid);
 
@@ -15,14 +17,27 @@ public class Main {
         System.out.println("GRID First generation:");
         GridDisplay.printGrid(newGrid.getGrid());
 
+        //TESTING
+        Grid.countSurroundingLivingCells(newGrid.getGrid(), 0, 0);
+        Grid.countSurroundingLivingCells(newGrid.getGrid(), 1, 1);
+        Grid.countSurroundingLivingCells(newGrid.getGrid(), 6, 7);
+
+
+
+        System.out.println("OG: " + countAliveNeighbors(grid, 0, 0));
+        System.out.println("RF: " + rfGrid[1][1].getLivingNeighbors());
+        System.out.println("RF: " + rfGrid[0][0].getLivingNeighbors());
+        System.out.println("RF: " + rfGrid[6][7].getLivingNeighbors());
+
+
+        //END TESTING
+
+
         while (time != 0){
             nextGeneration(grid);
             newGrid.nextGeneration(newGrid.getGrid());
             time--;
         }
-
-        Cell testCell = new Cell();
-        System.out.println(testCell.isLiving());
     }
 
     /**
@@ -87,7 +102,7 @@ public class Main {
             }
         }
 
-        System.out.println("GRID Next generation:");
+        System.out.println("OG Next generation:");
         printGrid(futureGrid);
     }
 
