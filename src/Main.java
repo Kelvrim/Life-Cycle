@@ -16,7 +16,7 @@ public class Main {
 
         System.out.println("GRID First generation:");
         GridDisplay.printGrid(newGrid.getGrid());
-
+//teststststss
         //TESTING
         Grid.countSurroundingLivingCells(newGrid.getGrid(), 0, 0);
         Grid.countSurroundingLivingCells(newGrid.getGrid(), 1, 1);
