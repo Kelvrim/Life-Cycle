@@ -83,6 +83,10 @@ public class Grid {
         grid[0][0].setLiving(true);
         grid[0][1].setLiving(true);
         grid[1][0].setLiving(true);
+
+        grid[5][6].setLiving(true);
+        grid[5][7].setLiving(true);
+        grid[5][8].setLiving(true);
     }
 
     /** HELPERS ***********************************************************************/
