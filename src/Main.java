@@ -8,34 +8,45 @@ public class Main {
         Grid newGrid = new Grid(width, height);
         Cell[][] rfGrid = newGrid.getGrid();
 
-
-        defaultOrientation(grid);
-
-        System.out.println("GRID First generation:");
-        printGrid(grid);
+        //defaultOrientation(grid);
 
         System.out.println("GRID First generation:");
-        GridDisplay.printGrid(newGrid.getGrid());
-//teststststss
+        GridDisplay.printGrid(rfGrid);
+
         //TESTING
+        /*
         Grid.countSurroundingLivingCells(newGrid.getGrid(), 0, 0);
         Grid.countSurroundingLivingCells(newGrid.getGrid(), 1, 1);
         Grid.countSurroundingLivingCells(newGrid.getGrid(), 6, 7);
 
+         */
+
+        //Grid.countAllLivingCells(newGrid.getGrid());
 
 
-        System.out.println("OG: " + countAliveNeighbors(grid, 0, 0));
-        System.out.println("RF: " + rfGrid[1][1].getLivingNeighbors());
         System.out.println("RF: " + rfGrid[0][0].getLivingNeighbors());
+        System.out.println("RF: " + rfGrid[1][1].getLivingNeighbors());
         System.out.println("RF: " + rfGrid[6][7].getLivingNeighbors());
 
+        System.out.println(RuleSet.classicLife(rfGrid[0][0]));
+        System.out.println(RuleSet.classicLife(rfGrid[1][1]));
+        System.out.println(RuleSet.classicLife(rfGrid[6][7]));
 
         //END TESTING
 
 
         while (time != 0){
-            nextGeneration(grid);
-            newGrid.nextGeneration(newGrid.getGrid());
+            //Grid.resetLivingNeighborsCountOfAllCells(newGrid.getGrid());
+            newGrid.nextGeneration(rfGrid);
+
+            System.out.println("RF: " + rfGrid[0][0].getLivingNeighbors());
+            System.out.println("RF: " + rfGrid[1][1].getLivingNeighbors());
+            System.out.println("RF: " + rfGrid[6][7].getLivingNeighbors());
+
+            System.out.println(RuleSet.classicLife(rfGrid[0][0]));
+            System.out.println(RuleSet.classicLife(rfGrid[1][1]));
+            System.out.println(RuleSet.classicLife(rfGrid[6][7]));
+
             time--;
         }
     }

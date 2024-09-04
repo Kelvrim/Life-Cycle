@@ -23,10 +23,9 @@ public class Grid {
         this.rows = rows;
         this.columns = columns;
 
-        //grid = new Cell[rows][columns];
         fillGridWithCells();
         setToDefaultOrientation(grid);
-        //setLivingNeighborOfEachCell(grid);
+        countAllLivingCells(grid);
     }
 
     /** ACCESSORS *********************************************************************/
@@ -36,28 +35,30 @@ public class Grid {
 
     /** MUTATORS **********************************************************************/
     public void nextGeneration(Cell[][] grid){
+        resetLivingNeighborsCountOfAllCells(grid);
+        countAllLivingCells(grid);
         Cell[][] futureGrid = grid;
+
+        System.out.println("test");
+        GridDisplay.printGrid(futureGrid);
+        GridDisplay.printGrid(grid);
+
+        System.out.println(futureGrid[0][0].isLiving());
+        System.out.println(futureGrid[0][0].getLivingNeighbors());
+
 
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 Cell currentCell = grid[i][j];
                 Cell futureCell = futureGrid[i][j];
 
-                /*
-                if (currentCell.isLiving()){
-                    updateSurroundingCellsLivingCount(grid, i, j);
-                }
-
-                 */
-                countSurroundingLivingCells(grid, i, j);
-
-                futureGrid[i][j].setLiving(RuleSet.classicLife(grid[i][j]));
+                futureCell.setLiving(RuleSet.classicLife(currentCell));
             }
         }
 
         System.out.println("Next generation:");
-        //setLivingNeighborOfEachCell(futureGrid);
         GridDisplay.printGrid(futureGrid);
+
     }
 
     private void fillGridWithCells(){
@@ -85,17 +86,11 @@ public class Grid {
     }
 
     /** HELPERS ***********************************************************************/
-    /**
-     * This should only be used for the first generation of the grid. After that,
-     * we'll call updateSurroundingCellsLivingCount() on each pass when necessary
-     * @param grid
-     */
-    private void setLivingNeighborOfEachCell(Cell[][] grid){
+
+    public static void countAllLivingCells(Cell[][] grid){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
-                if (grid[i][j].isLiving()){
-                    countSurroundingLivingCells(grid, i, j);
-                }
+                countSurroundingLivingCells(grid, i, j);
             }
         }
     }
@@ -129,5 +124,12 @@ public class Grid {
         }
     }
 
+    public static void resetLivingNeighborsCountOfAllCells(Cell[][] grid){
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                grid[i][j].setLivingNeighbors(0);
+            }
+        }
+    }
 
 }
