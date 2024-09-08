@@ -1,8 +1,10 @@
 /**
- * This class is currently UNIMPLEMENTED. It has certain properties and functions that
- * clash with existing ones in Main.
+ * A class for creating the Cell grid. Handles dimensions and some logic (such as
+ * counting the surrounding living neighbors of a Cell.
+ *
+ *
+ * emily wuz here
  */
-
 public class Grid {
     /** PROPERTIES ********************************************************************/
     private static int rows = 10;
@@ -20,11 +22,11 @@ public class Grid {
         if (columns < MIN_ALLOWED_COLUMNS){
             columns = MIN_ALLOWED_COLUMNS;
         }
-        this.rows = rows;
-        this.columns = columns;
+        Grid.rows = rows;
+        Grid.columns = columns;
 
         fillGridWithCells();
-        setToDefaultOrientation(grid);
+        setToDefaultOrientation();
         countAllLivingCells(grid);
     }
 
@@ -34,33 +36,36 @@ public class Grid {
     }
 
     /** MUTATORS **********************************************************************/
+    /**
+     * Handles the next iteration of the grid. Uses a second grid as a buffer
+     * to prevent mistakes with livingNeighbors.
+     * @param grid
+     */
     public void nextGeneration(Cell[][] grid){
+        // First reset livingNeighborCount of every cell to 0, then recount for this iteration
         resetLivingNeighborsCountOfAllCells(grid);
         countAllLivingCells(grid);
+
+        // It's not really redundant I promise
         Cell[][] futureGrid = grid;
-
-        System.out.println("test");
-        GridDisplay.printGrid(futureGrid);
-        GridDisplay.printGrid(grid);
-
-        System.out.println(futureGrid[0][0].isLiving());
-        System.out.println(futureGrid[0][0].getLivingNeighbors());
-
 
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 Cell currentCell = grid[i][j];
                 Cell futureCell = futureGrid[i][j];
 
+                // Judges currentCell with the classic ruleset, and applies the result to futureCell
                 futureCell.setLiving(RuleSet.classicLife(currentCell));
             }
         }
 
         System.out.println("Next generation:");
         GridDisplay.printGrid(futureGrid);
-
     }
 
+    /**
+     * Fills the grid with cells, all of them dead by default
+     */
     private void fillGridWithCells(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
@@ -69,28 +74,27 @@ public class Grid {
         }
     }
 
-    private void setToDefaultOrientation(Cell[][] grid) {
-        /*
-        grid[3][3].setLiving(true);
-        grid[3][4].setLiving(true);
-        grid[2][3].setLiving(true);
-        grid[5][6].setLiving(true);
-        grid[6][5].setLiving(true);
-        grid[6][6].setLiving(true);
-        grid[7][4].setLiving(true);
-
-         */
+    /**
+     * sets the grid to default orientation, which is determined in this function
+     */
+    private void setToDefaultOrientation() {
+        // 2X2 Upside down L in the top left
         grid[0][0].setLiving(true);
         grid[0][1].setLiving(true);
         grid[1][0].setLiving(true);
 
+        // 1X3 Horizontal line in the right middle
         grid[5][6].setLiving(true);
         grid[5][7].setLiving(true);
         grid[5][8].setLiving(true);
     }
 
     /** HELPERS ***********************************************************************/
-
+    /**
+     * Iterates through the grid and calls countSurroundingLivingCells, which updates
+     * the livingNeighbors count of the cell in question
+     * @param grid i rows and j columns
+     */
     public static void countAllLivingCells(Cell[][] grid){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
@@ -100,11 +104,11 @@ public class Grid {
     }
 
     /**
-     * Given the i and j location of a living Cell on grid, this updates the livingNeighbors
-     * property of all surrounding cells
-     * @param grid
-     * @param i
-     * @param j
+     * Given the i and j location of a living Cell on grid, this counts its surrounding
+     * living Neighbors and updates the livingNeighbors property of the Cell at [i][j]
+     * @param grid  i rows and j columns
+     * @param i     outer array coordinate of the cell in question
+     * @param j     inner array coordinate of the cell in question
      */
     public static void countSurroundingLivingCells(Cell[][] grid, int i, int j) {
         // Iterates through each surrounding cell including the current cell
@@ -128,6 +132,11 @@ public class Grid {
         }
     }
 
+    /**
+     * When recounting the livingNeighbors of a cell on future generations, we need to start at zero.
+     * This iterates through each cel and resets the livingNeighbor count to zero
+     * @param grid i rows and j columns
+     */
     public static void resetLivingNeighborsCountOfAllCells(Cell[][] grid){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
