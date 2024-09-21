@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        final int ROWS = 50;     // rows and columns for the grid
+        final int ROWS = 50;         // rows and columns for the grid
         final int COLUMNS = 79;
         final int DELAY = 200;       // the higher the delay, the slower cells move | milliseconds
 

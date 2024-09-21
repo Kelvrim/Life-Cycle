@@ -26,16 +26,16 @@ public class GridDisplay extends JPanel {
 
                 // Set color based on cell state
                 if (cell.isLiving()) {
-                    g.setColor(Color.BLACK);
+                    g.setColor(GridColors.ALIVE_CELL);
                 } else {
-                    g.setColor(Color.WHITE);
+                    g.setColor(GridColors.DEAD_CELL);
                 }
 
                 // Draw the cell
                 g.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 
                 // Draw cell borders
-                g.setColor(Color.GRAY);
+                g.setColor(GridColors.GRIDLINES);
                 g.drawRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
         }
