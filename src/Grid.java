@@ -4,9 +4,9 @@
  */
 public class Grid {
     /** PROPERTIES ********************************************************************/
-    private static int rows = 10;
-    private static int columns = 10;
-    private Cell[][] grid = new Cell[rows][columns];
+    private int rows;
+    private int columns;
+    private Cell[][] grid;
 
     public final int MIN_ALLOWED_ROWS = 10;
     public final int MIN_ALLOWED_COLUMNS = 10;
@@ -19,8 +19,9 @@ public class Grid {
         if (columns < MIN_ALLOWED_COLUMNS){
             columns = MIN_ALLOWED_COLUMNS;
         }
-        Grid.rows = rows;
-        Grid.columns = columns;
+        this.rows = rows;
+        this.columns = columns;
+        grid = new Cell[rows][columns];
 
         fillGridWithCells();
         setToDefaultOrientation();
@@ -67,9 +68,6 @@ public class Grid {
                 futureCell.setLiving(RuleSet.classicLife(currentCell));
             }
         }
-
-        System.out.println("Next generation:");
-        GridDisplay.printGrid(futureGrid);
     }
 
     /**
@@ -104,7 +102,7 @@ public class Grid {
      * the livingNeighbors count of the cell in question
      * @param grid i rows and j columns
      */
-    public static void countAllLivingCells(Cell[][] grid){
+    public void countAllLivingCells(Cell[][] grid){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 countSurroundingLivingCells(grid, i, j);
@@ -119,7 +117,7 @@ public class Grid {
      * @param i     outer array coordinate of the cell in question
      * @param j     inner array coordinate of the cell in question
      */
-    public static void countSurroundingLivingCells(Cell[][] grid, int i, int j) {
+    public void countSurroundingLivingCells(Cell[][] grid, int i, int j) {
         // Iterates through each surrounding cell including the current cell
         for (int rowOffset = -1; rowOffset <= 1; rowOffset++){
             for (int columnOffset = -1; columnOffset <= 1; columnOffset++){
@@ -146,7 +144,7 @@ public class Grid {
      * This iterates through each cel and resets the livingNeighbor count to zero
      * @param grid i rows and j columns
      */
-    public static void resetLivingNeighborsCountOfAllCells(Cell[][] grid){
+    public void resetLivingNeighborsCountOfAllCells(Cell[][] grid){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 grid[i][j].setLivingNeighbors(0);

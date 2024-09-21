@@ -2,12 +2,12 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        int width = 10;     // Width and height for the grid
-        int height = 10;
+        int rows = 100;     // rows and columns for the grid
+        int columns = 100;
         int time = 5;       // How many 'turns' we play for
 
         // TODO: find a better way to name this monstrosity
-        Grid grid = new Grid(width, height);
+        Grid grid = new Grid(rows, columns);
         GridDisplay gridDisplay = new GridDisplay(grid);
         Cell[][] gridArray = grid.getGrid();
 
