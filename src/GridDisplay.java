@@ -2,24 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GridDisplay extends JPanel {
-    private Grid grid; // Reference to the Grid object
+    private final Grid grid; // Reference to the Grid object
+    private final int CELL_SIZE = 10;
 
     public GridDisplay(Grid grid) {
         this.grid = grid;
-        setPreferredSize(new Dimension(grid.getColumns() * 10, grid.getRows() * 10)); // Adjust size based on grid dimensions
+        // Adjust size based on grid dimensions
+        setPreferredSize(new Dimension(grid.getColumns() * CELL_SIZE, grid.getRows() * CELL_SIZE));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawGrid(g);
-        //repaint();
     }
 
     private void drawGrid(Graphics g) {
-        int cellSize = 10; // Size of each cell
 
-        // Loop through each cell in the grid
+        // loop through each cell in the grid
         for (int row = 0; row < grid.getRows(); row++) {
             for (int col = 0; col < grid.getColumns(); col++) {
                 Cell cell = grid.getCell(row, col);
@@ -32,11 +32,11 @@ public class GridDisplay extends JPanel {
                 }
 
                 // Draw the cell
-                g.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+                g.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 
                 // Draw cell borders
                 g.setColor(Color.GRAY);
-                g.drawRect(col * cellSize, row * cellSize, cellSize, cellSize);
+                g.drawRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
         }
     }

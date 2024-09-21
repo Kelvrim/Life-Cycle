@@ -90,10 +90,22 @@ public class Grid {
         grid[0][1].setLiving(true);
         grid[1][0].setLiving(true);
 
+        // 2X2 backwards L in the top left. forms a blinker structure with the other L
+        grid[3][3].setLiving(true);
+        grid[2][3].setLiving(true);
+        grid[3][2].setLiving(true);
+
         // 1X3 Horizontal line in the right middle
         grid[5][6].setLiving(true);
         grid[5][7].setLiving(true);
         grid[5][8].setLiving(true);
+
+        // Travelling blip
+        grid[6][1].setLiving(true);
+        grid[6][3].setLiving(true);
+        grid[7][2].setLiving(true);
+        grid[7][3].setLiving(true);
+        grid[8][2].setLiving(true);
     }
 
     /** HELPERS ***********************************************************************/
