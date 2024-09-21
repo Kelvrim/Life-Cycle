@@ -1,9 +1,6 @@
 /**
  * A class for creating the Cell grid. Handles dimensions and some logic (such as
  * counting the surrounding living neighbors of a Cell.
- *
- *
- * emily wuz here
  */
 public class Grid {
     /** PROPERTIES ********************************************************************/
@@ -33,6 +30,18 @@ public class Grid {
     /** ACCESSORS *********************************************************************/
     public Cell[][] getGrid() {
         return grid;
+    }
+
+    public int getRows(){
+        return rows;
+    }
+
+    public int getColumns(){
+        return columns;
+    }
+
+    public Cell getCell(int row, int column) {
+        return grid[row][column];
     }
 
     /** MUTATORS **********************************************************************/

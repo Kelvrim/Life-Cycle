@@ -1,8 +1,45 @@
-public class GridDisplay {
-    /** PROPERTIES ********************************************************************/
-    /** CONSTRUCTORS ******************************************************************/
-    /** ACCESSORS *********************************************************************/
-    /** MUTATORS **********************************************************************/
+import javax.swing.*;
+import java.awt.*;
+
+public class GridDisplay extends JPanel {
+    private Grid grid; // Reference to the Grid object
+
+    public GridDisplay(Grid grid) {
+        this.grid = grid;
+        setPreferredSize(new Dimension(grid.getColumns() * 10, grid.getRows() * 10)); // Adjust size based on grid dimensions
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawGrid(g);
+        //repaint();
+    }
+
+    private void drawGrid(Graphics g) {
+        int cellSize = 10; // Size of each cell
+
+        // Loop through each cell in the grid
+        for (int row = 0; row < grid.getRows(); row++) {
+            for (int col = 0; col < grid.getColumns(); col++) {
+                Cell cell = grid.getCell(row, col);
+
+                // Set color based on cell state
+                if (cell.isLiving()) {
+                    g.setColor(Color.BLACK);
+                } else {
+                    g.setColor(Color.WHITE);
+                }
+
+                // Draw the cell
+                g.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+
+                // Draw cell borders
+                g.setColor(Color.GRAY);
+                g.drawRect(col * cellSize, row * cellSize, cellSize, cellSize);
+            }
+        }
+    }
     /** HELPERS ***********************************************************************/
     /**
      * prints as text to system. Mainly used for testing
