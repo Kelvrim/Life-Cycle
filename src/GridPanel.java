@@ -1,14 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class GridDisplay extends JPanel {
+public class GridPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
+    /** PROPERTIES ****************************************************************************************/
     private final Grid grid; // Reference to the Grid object
     private final int CELL_SIZE = 10;
 
-    public GridDisplay(Grid grid) {
+    /** CONSTRUCTOR **************************************************************************************/
+    public GridPanel(Grid grid) {
         this.grid = grid;
         // Adjust size based on grid dimensions
         setPreferredSize(new Dimension(grid.getColumns() * CELL_SIZE, grid.getRows() * CELL_SIZE));
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        addKeyListener(this);
     }
 
     @Override
@@ -63,4 +70,64 @@ public class GridDisplay extends JPanel {
         }
     }
 
+    /** MOUSE LISTENER METHODS **********************************************************************************/
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Cell cellUnderMouse;
+        cellUnderMouse = grid.getCell(e.getY() / CELL_SIZE , e.getX() / CELL_SIZE);
+
+        cellUnderMouse.switchLiving();
+        repaint();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    /** MOUSE MOTION LISTENER METHODS **********************************************************************************/
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Cell cellUnderMouse;
+        cellUnderMouse = grid.getCell(e.getY() / CELL_SIZE , e.getX() / CELL_SIZE);
+
+        cellUnderMouse.switchLiving();
+        repaint();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
+
+    /** KEY LISTENER METHODS **********************************************************************************/
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }

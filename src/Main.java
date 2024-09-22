@@ -1,32 +1,39 @@
 import com.formdev.flatlaf.FlatDarculaLaf;
-
 import javax.swing.*;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
         final int ROWS = 50;         // rows and columns for the grid
-        final int COLUMNS = 79;
+        final int COLUMNS = 80;
         final int DELAY = 200;       // the higher the delay, the slower cells move | milliseconds
 
+
+        Grid grid = new Grid(ROWS, COLUMNS);
+
+        // Apply Darcula theme to JFrame and JPanels
         FlatDarculaLaf.setup();
 
-        // TODO: find a better way to name this monstrosity
-        Grid grid = new Grid(ROWS, COLUMNS);
-        GridDisplay gridDisplay = new GridDisplay(grid);
-        Cell[][] gridArray = grid.getGrid();
+        // Instantiate JPanels
+        GridPanel gridPanel = new GridPanel(grid);
+        ControlPanel controlPanel = new ControlPanel();
 
+        boolean paused = controlPanel.getPaused();
+
+
+        // Instantiate JFrame
         JFrame frame = new JFrame("Game of Life");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(gridDisplay);
+        frame.add(gridPanel);
+        frame.add(controlPanel, BorderLayout.SOUTH);
         frame.pack();
+        frame.setResizable(false);
         frame.setVisible(true);
 
-
-
-        /* MAIN GAME LOOP ***********************************************************************************/
-        while (true) {
-            grid.nextGeneration(gridArray); // Update the grid to the next generation
-            gridDisplay.repaint(); // Refresh the display
+        /** MAIN GAME LOOP ***********************************************************************************/
+        while (!paused) {
+            grid.nextGeneration(grid.getGrid()); // Update the grid to the next generation
+            gridPanel.repaint(); // Refresh the display
             try {
                 Thread.sleep(DELAY);
             } catch (InterruptedException e) {

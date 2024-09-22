@@ -30,6 +30,10 @@ public class Cell {
         isLiving = living;
     }
 
+    public void switchLiving(){
+        isLiving = !isLiving;
+    }
+
     public void setLivingNeighbors(int livingNeighbors) {
         this.livingNeighbors = livingNeighbors;
     }

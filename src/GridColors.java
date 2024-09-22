@@ -5,6 +5,7 @@ public class GridColors {
     public static Color ALIVE_CELL = new Color(103,154,124);
     public static Color GRIDLINES = new Color(33,36,39);
 
-    //public static Color ALIVE_CELL = new Color(217,210,233);
+    //public static Color ALIVE_CELL = new Color(217,210,233);  POIPAL
+    //     public static Color ALIVE_CELL = new Color(103,154,124); GREEM
 }
 
