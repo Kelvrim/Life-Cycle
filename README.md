@@ -30,3 +30,4 @@ Once we have our MVP, we can focus on this (probably constantly growing list) of
 - Alternate graphing:
   - Hexagonal
   - 3D
+- Zoom / Scroll
