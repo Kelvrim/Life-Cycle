@@ -2,20 +2,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GridPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
+public class GridPanel extends JPanel implements MouseListener, MouseMotionListener{
     /** PROPERTIES ****************************************************************************************/
     private final Grid grid; // Reference to the Grid object
+    private final ControlPanel controlPanel;
     private final int CELL_SIZE = 10;
 
     /** CONSTRUCTOR **************************************************************************************/
-    public GridPanel(Grid grid) {
+    public GridPanel(Grid grid, ControlPanel controlPanel) {
         this.grid = grid;
+        this.controlPanel = controlPanel;
         // Adjust size based on grid dimensions
         setPreferredSize(new Dimension(grid.getColumns() * CELL_SIZE, grid.getRows() * CELL_SIZE));
 
         addMouseListener(this);
         addMouseMotionListener(this);
-        addKeyListener(this);
     }
 
     @Override
@@ -106,28 +107,17 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
         Cell cellUnderMouse;
         cellUnderMouse = grid.getCell(e.getY() / CELL_SIZE , e.getX() / CELL_SIZE);
 
-        cellUnderMouse.switchLiving();
+        //cellUnderMouse.switchLiving();
+        if (controlPanel.getEraserStatus()){
+            cellUnderMouse.setLiving(false);
+        } else {
+            cellUnderMouse.setLiving(true);
+        }
         repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
-    }
-
-    /** KEY LISTENER METHODS **********************************************************************************/
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
 
     }
 }

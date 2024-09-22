@@ -15,11 +15,8 @@ public class Main {
         FlatDarculaLaf.setup();
 
         // Instantiate JPanels
-        GridPanel gridPanel = new GridPanel(grid);
         ControlPanel controlPanel = new ControlPanel();
-
-        boolean paused = controlPanel.getPaused();
-
+        GridPanel gridPanel = new GridPanel(grid, controlPanel);
 
         // Instantiate JFrame
         JFrame frame = new JFrame("Game of Life");
@@ -31,8 +28,11 @@ public class Main {
         frame.setVisible(true);
 
         /** MAIN GAME LOOP ***********************************************************************************/
-        while (!paused) {
-            grid.nextGeneration(grid.getGrid()); // Update the grid to the next generation
+        while (true) {
+            // If un-paused, keep generating
+            if (!controlPanel.isPaused()){
+                grid.nextGeneration(grid.getGrid()); // Update the grid to the next generation
+            }
             gridPanel.repaint(); // Refresh the display
             try {
                 Thread.sleep(DELAY);
