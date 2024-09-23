@@ -15,6 +15,8 @@ public class ControlPanel extends JPanel implements MouseListener {
     // Actions
     PauseAction pauseAction = new PauseAction();
     ClearAction clearAction = new ClearAction();
+    ToggleEraserAction toggleEraserAction = new ToggleEraserAction();
+
 
     // References to other Objects and Classes
     private final Grid grid; // Reference to the Grid object
@@ -35,6 +37,9 @@ public class ControlPanel extends JPanel implements MouseListener {
 
         this.getInputMap().put(KeyStroke.getKeyStroke('c'), "clearAction");
         this.getActionMap().put("clearAction", clearAction);
+
+        this.getInputMap().put(KeyStroke.getKeyStroke('e'), "toggleEraserAction");
+        this.getActionMap().put("toggleEraserAction", toggleEraserAction);
     }
 
     /** ACCESSORS **********************************************************************************/
@@ -73,15 +78,20 @@ public class ControlPanel extends JPanel implements MouseListener {
 
     /** ACTION CLASSES *************************************************************************************/
     public class PauseAction extends AbstractAction {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             paused = !paused;
         }
     }
 
-    public class ClearAction extends AbstractAction {
+    public class ToggleEraserAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            eraser = !eraser;
+        }
+    }
 
+    public class ClearAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             clearScreen();
