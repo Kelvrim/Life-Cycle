@@ -14,9 +14,14 @@ public class ControlPanel extends JPanel implements MouseListener {
 
     // Actions
     PauseAction pauseAction = new PauseAction();
+    ClearAction clearAction = new ClearAction();
+
+    // References to other Objects and Classes
+    private final Grid grid; // Reference to the Grid object
 
     /** CONSTRUCTOR **********************************************************************************/
-    public ControlPanel(){
+    public ControlPanel(Grid grid){
+        this.grid = grid;
         addMouseListener(this);
 
         add(startStop);
@@ -27,6 +32,9 @@ public class ControlPanel extends JPanel implements MouseListener {
 
         this.getInputMap().put(KeyStroke.getKeyStroke(' '), "pauseAction");
         this.getActionMap().put("pauseAction", pauseAction);
+
+        this.getInputMap().put(KeyStroke.getKeyStroke('c'), "clearAction");
+        this.getActionMap().put("clearAction", clearAction);
     }
 
     /** ACCESSORS **********************************************************************************/
@@ -69,6 +77,24 @@ public class ControlPanel extends JPanel implements MouseListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             paused = !paused;
+        }
+    }
+
+    public class ClearAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearScreen();
+        }
+
+        public void clearScreen(){
+            // loop through each cell in the grid
+            for (int row = 0; row < grid.getRows(); row++) {
+                for (int col = 0; col < grid.getColumns(); col++) {
+                    Cell cell = grid.getCell(row, col);
+                    cell.setLiving(false);
+                }
+            }
         }
     }
 }

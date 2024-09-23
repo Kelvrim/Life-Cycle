@@ -15,7 +15,7 @@ public class Main {
         FlatDarculaLaf.setup();
 
         // Instantiate JPanels
-        ControlPanel controlPanel = new ControlPanel();
+        ControlPanel controlPanel = new ControlPanel(grid);
         GridPanel gridPanel = new GridPanel(grid, controlPanel);
 
         // Instantiate JFrame
