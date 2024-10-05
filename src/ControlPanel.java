@@ -1,7 +1,8 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
-public class ControlPanel extends JPanel implements MouseListener {
+public class ControlPanel extends JPanel implements MouseListener, ActionListener {
 
     /** PROPERTIES ***********************************************************************************/
     // Controlling properties
@@ -9,7 +10,7 @@ public class ControlPanel extends JPanel implements MouseListener {
     private boolean eraser;
 
     // Buttons
-    JButton startStop = new JButton("START");
+    JButton startStop = new JButton(new ImageIcon("resources/pauseLogo.png"));
     JButton reset = new JButton("RESET");
 
     // Actions
@@ -17,9 +18,8 @@ public class ControlPanel extends JPanel implements MouseListener {
     ClearAction clearAction = new ClearAction();
     ToggleEraserAction toggleEraserAction = new ToggleEraserAction();
 
-
     // References to other Objects and Classes
-    private final Grid grid; // Reference to the Grid object
+    private static Grid grid; // Reference to the Grid object
 
     /** CONSTRUCTOR **********************************************************************************/
     public ControlPanel(Grid grid){
@@ -28,6 +28,26 @@ public class ControlPanel extends JPanel implements MouseListener {
 
         add(startStop);
         add(reset);
+
+        startStop.setPreferredSize(new Dimension(300, 300));
+        reset.setPreferredSize(new Dimension(30, 30));
+
+
+        // Button logic
+        startStop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                paused = !paused;
+            }
+        });
+
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ClearAction.clearScreen();
+
+            }
+        });
 
         startStop.setFocusable(false);
         reset.setFocusable(false);
@@ -76,6 +96,12 @@ public class ControlPanel extends JPanel implements MouseListener {
 
     }
 
+    /** ACTION LISTENER METHODS *************************************************************************************/
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
     /** ACTION CLASSES *************************************************************************************/
     public class PauseAction extends AbstractAction {
         @Override
@@ -97,7 +123,7 @@ public class ControlPanel extends JPanel implements MouseListener {
             clearScreen();
         }
 
-        public void clearScreen(){
+        public static void clearScreen(){
             // loop through each cell in the grid
             for (int row = 0; row < grid.getRows(); row++) {
                 for (int col = 0; col < grid.getColumns(); col++) {
