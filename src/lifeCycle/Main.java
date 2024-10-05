@@ -1,9 +1,15 @@
+package lifeCycle;
+
 import com.formdev.flatlaf.FlatDarculaLaf;
+import lifeCycle.panels.ControlPanel;
+import lifeCycle.panels.GridPanel;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final int ROWS = 50;         // rows and columns for the grid
         final int COLUMNS = 80;
         final int DELAY = 200;       // the higher the delay, the slower cells move | milliseconds
@@ -19,7 +25,7 @@ public class Main {
         GridPanel gridPanel = new GridPanel(grid, controlPanel);
 
         // Instantiate JFrame
-        JFrame frame = new JFrame("Game of Life");
+        JFrame frame = new JFrame("LIFE CYCLE");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(gridPanel);
         frame.add(controlPanel, BorderLayout.SOUTH);
@@ -29,6 +35,7 @@ public class Main {
 
         /** MAIN GAME LOOP ***********************************************************************************/
         while (true) {
+            grid.countNeighborsOfAllUpdatedCells(grid.getGrid());
             // If un-paused, keep generating
             if (!controlPanel.isPaused()){
                 grid.nextGeneration(grid.getGrid()); // Update the grid to the next generation
