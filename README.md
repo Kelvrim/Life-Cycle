@@ -7,8 +7,8 @@ is updated in discrete time steps based on the state of its immediate neighbors.
 
 Most cellular automata models could barely be described as a game at all, but many ascribe to the term "0 player game."
 The idea is that once there are some cells on the grid, life takes off! What's interesting about a lot of cellular automata
-rulesets (including Conways Game of Life) are technically undecidable. This means that although you can intuit infinite loops and behaviour of cells decently well,
-there is no way to prove it mathematically. What I mean specifically: given an initial pattern and a later pattern, 
+rulesets (including Conways Game of Life) is that they are technically undecidable. This means that although you can intuit infinite loops and behaviour of cells decently well,
+there is no way to prove it mathematically. In more formal terms: given an initial pattern and a later pattern, 
 no algorithm exists that can tell whether the later pattern is ever going to appear.
 
 For more information, strongly consider reading up on [cellular automata](https://en.wikipedia.org/wiki/Cellular_automaton). There's a
