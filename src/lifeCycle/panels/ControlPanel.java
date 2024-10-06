@@ -82,6 +82,8 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
             }
         });
 
+        //test
+
         // Add actions to input maps (certain keys trigger actions)
         this.getInputMap().put(KeyStroke.getKeyStroke(' '), "pauseAction");
         this.getActionMap().put("pauseAction", pauseAction);
