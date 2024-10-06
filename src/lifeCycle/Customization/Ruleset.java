@@ -1,5 +1,6 @@
-package lifeCycle;
+package lifeCycle.Customization;
 
+import lifeCycle.Cell;
 import lifeCycle.buttons.RulesetDropdown;
 
 /**

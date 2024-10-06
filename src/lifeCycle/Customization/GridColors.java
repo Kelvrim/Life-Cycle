@@ -1,4 +1,4 @@
-package lifeCycle.panels;
+package lifeCycle.Customization;
 
 import java.awt.*;
 

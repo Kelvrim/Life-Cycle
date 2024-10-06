@@ -1,5 +1,7 @@
 package lifeCycle;
 
+import lifeCycle.Customization.Ruleset;
+
 /**
  * Class for each cell within the grid. They only have two states: alive or dead. These are decided
  * by how many living neighbors the individual cell has, which depends on which rule from Ruleset is

@@ -1,6 +1,7 @@
 package lifeCycle.panels;
 
 import lifeCycle.Cell;
+import lifeCycle.Customization.GridColors;
 import lifeCycle.Grid;
 
 import javax.swing.*;

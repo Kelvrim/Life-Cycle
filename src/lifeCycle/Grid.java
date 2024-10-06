@@ -1,5 +1,7 @@
 package lifeCycle;
 
+import lifeCycle.Customization.Patterns;
+
 /**
  * A class for creating the lifeCycle.Cell grid. Handles dimensions and some logic (such as
  * counting the surrounding living neighbors of a lifeCycle.Cell.
@@ -13,21 +15,23 @@ public class Grid {
     public final int MIN_ALLOWED_ROWS = 10;
     public final int MIN_ALLOWED_COLUMNS = 10;
 
-    /** CONSTRUCTORS ******************************************************************/
+    /** CONSTRUCTOR ******************************************************************/
     public Grid(int rows, int columns) {
+        // Ensure that rows and columns are within proper bounds
         if (rows < MIN_ALLOWED_ROWS){
             rows = MIN_ALLOWED_ROWS;
         }
         if (columns < MIN_ALLOWED_COLUMNS){
             columns = MIN_ALLOWED_COLUMNS;
         }
+
         this.rows = rows;
         this.columns = columns;
         grid = new Cell[rows][columns];
 
         initializeGrid();
         setToDefaultOrientation();
-        countAllLivingCells(grid);
+        countLivingNeighborsForAllCells(grid);
     }
 
     /** ACCESSORS *********************************************************************/
@@ -137,10 +141,10 @@ public class Grid {
 
     /** HELPERS ***********************************************************************/
     /**
-     * Iterates through the grid and calls countSurroundingLivingCells, which updates
-     * the livingNeighbors count of the cell in question
+     * counts the living neighbors for ALL cells. Only to be used once, in the constructor.
+     * @param grid
      */
-    private void countAllLivingCells(Cell[][] grid){
+    private void countLivingNeighborsForAllCells(Cell[][] grid){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 countSurroundingLivingNeighbors(grid, i, j);
@@ -148,6 +152,12 @@ public class Grid {
         }
     }
 
+    /**
+     * Goes through each Cell in the grid, and if its recently updated (if its
+     * previousState is not the same as its isLiving state) counts the neighbors
+     * of that cell.
+     * @param grid
+     */
     public void countNeighborsOfAllUpdatedCells(Cell[][] grid) {
         for(int i = 0; i < this.rows; i++) {
             for(int j = 0; j < this.columns; j++) {
@@ -159,6 +169,26 @@ public class Grid {
         }
     }
 
+    /**
+     * Not to be confused with countSurroundingLivingNeighbors! Goes to each neighbor of
+     * a specific Cell, and counts the living neighbors of each of THOSE cells
+     *
+     * to demonstrate:
+     *
+     *                  O O O O O
+     *                  O y y y O
+     *                  O y x y O
+     *                  O y y y O
+     *                  O O O O O
+     *
+     * here, x is the cell at the ith and jth position of the cell. This function goes to all of
+     * the y's (x'x neighbors). each y's living neighbors are counted and stored in each y's
+     * livingNeighbors property (so for each y, the surrounding Os and the one x is counted)
+     *
+     * @param grid Cell[][] grid
+     * @param i    i position of particular cell
+     * @param j    j position of particular cell
+     */
     private void countNeighborsOfSurroundingCells(Cell[][] grid, int i, int j) {
         for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
             for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
@@ -174,11 +204,11 @@ public class Grid {
     }
 
     /**
-     * Given the i and j location of a living Cell on grid, this counts its surrounding
-     * living Neighbors and updates the livingNeighbors property of the Cell at [i][j]
-     * @param grid  i rows and j columns
-     * @param i     outer array coordinate of the cell in question
-     * @param j     inner array coordinate of the cell in question
+     * Counts the surrounding living neighbors of a specified Cell
+     *
+     * @param grid Cell[][] grid
+     * @param i    i position of particular cell
+     * @param j    j position of particular cell
      */
     public void countSurroundingLivingNeighbors(Cell[][] grid, int i, int j) {
 
@@ -202,8 +232,15 @@ public class Grid {
         }
     }
 
-    private boolean isValidPosition(int newRow, int newColumn) {
-        if ((newRow >= 0 && newRow < rows) && (newColumn >= 0 && newColumn < columns)) {
+    /**
+     * Verifies that the specified cell lies within the parameters of the grid
+     *
+     * @param i ith position of the Cell in question
+     * @param j jth position of the Cell in question
+     * @return
+     */
+    private boolean isValidPosition(int i, int j) {
+        if ((i >= 0 && i < rows) && (j >= 0 && j < columns)) {
             return true;
         }
         return false;

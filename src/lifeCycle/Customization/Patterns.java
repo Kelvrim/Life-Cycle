@@ -1,4 +1,6 @@
-package lifeCycle;
+package lifeCycle.Customization;
+
+import lifeCycle.Cell;
 
 /**
  * This class contains methods that set cells in a certain pattern to be alive.
