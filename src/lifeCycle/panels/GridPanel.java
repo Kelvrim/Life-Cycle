@@ -84,9 +84,8 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
         Cell cellUnderMouse;
         cellUnderMouse = grid.getCell(e.getY() / CELL_SIZE , e.getX() / CELL_SIZE);
 
-        cellUnderMouse.switchLiving();
-        cellUnderMouse.prepareUpdate();
-        Grid.changedCells.add(cellUnderMouse);
+        cellUnderMouse.setPreviousState(cellUnderMouse.isLiving());
+        cellUnderMouse.setLiving(!controlPanel.getEraserStatus());
         repaint();
     }
 
@@ -116,7 +115,6 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
         Cell cellUnderMouse;
         cellUnderMouse = grid.getCell(e.getY() / CELL_SIZE , e.getX() / CELL_SIZE);
 
-        //cellUnderMouse.switchLiving();
         cellUnderMouse.setPreviousState(cellUnderMouse.isLiving());
         cellUnderMouse.setLiving(!controlPanel.getEraserStatus());
         repaint();

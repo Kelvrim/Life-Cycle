@@ -3,6 +3,7 @@ package lifeCycle.panels;
 import lifeCycle.*;
 import lifeCycle.actions.*;
 import lifeCycle.buttons.PauseButton;
+import lifeCycle.buttons.RulesetDropdown;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,7 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
     // Buttons
     PauseButton pauseButton = new PauseButton(this);
     JButton reset = new JButton("RESET");
+    RulesetDropdown rulesetDropdown = new RulesetDropdown();
 
     // References to other Objects and Classes
     private static Grid grid; // Reference to the lifeCycle.Grid object
@@ -33,6 +35,8 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
         ControlPanel.grid = grid;
         addMouseListener(this);
 
+        //this.setLayout();
+
         // Construct all abstract action objects
         pauseAction = new PauseAction(this);
         clearAction = new ClearScreen(this, grid);
@@ -41,13 +45,24 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
         // Add buttons
         add(pauseButton);
         add(reset);
+        add(rulesetDropdown);
+
+        // JPanels for buttons
+        JPanel actionPanel = new JPanel();
+        actionPanel.add(pauseButton);
+        actionPanel.add(reset);
+        //actionPanel.setVisible(true);
+
+        this.add(actionPanel, BorderLayout.WEST);
 
         // Button misc settings
-        //pauseButton.setPreferredSize(new Dimension(300, 300));
+        pauseButton.setPreferredSize(new Dimension(30, 30));
         reset.setPreferredSize(new Dimension(30, 30));
 
-        //pauseButton.setFocusable(false);
+        pauseButton.setFocusable(false);
         reset.setFocusable(false);
+        rulesetDropdown.setFocusable(false);
+
 
         // Button logic
         /*
