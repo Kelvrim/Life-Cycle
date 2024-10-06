@@ -40,7 +40,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
 
                 // Set color based on cell state
                 if (cell.isLiving()) {
-                    g.setColor(GridColors.ALIVE_CELL);
+                    g.setColor(GridColors.aliveCellColorPicker(cell, controlPanel));
                 } else {
                     g.setColor(GridColors.DEAD_CELL);
                 }

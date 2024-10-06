@@ -20,7 +20,8 @@ public class PauseButton extends JButton implements ActionListener {
     PauseButton pauseButtonAction;
     ControlPanel controlPanel;
 
-    // Pause icon setup TODO: these icons suck and need to be changed. See Github issues
+    // Pause icon setup
+    // TODO: these icons suck and need to be changed. See Github issues
     BufferedImage bufferedPauseImage = ImageIO.read(new File("resources/pauseLogo.png"));
     Image pauseImage = bufferedPauseImage.getScaledInstance(PAUSE_BUTTON_SIZE.width, PAUSE_BUTTON_SIZE.height, Image.SCALE_DEFAULT);
     ImageIcon pauseImageIcon = new ImageIcon(pauseImage);
@@ -36,7 +37,8 @@ public class PauseButton extends JButton implements ActionListener {
         this.controlPanel = controlPanel;
 
         setFocusable(false);
-        setIcon(playImageIcon);
+        // TODO: For now, these will be loaded with text instead of an icon. Revisit when icons are better
+        setText("PLAY");
 
         addActionListener(this);
     }
@@ -45,10 +47,14 @@ public class PauseButton extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         controlPanel.togglePause();
 
+        // TODO: For now, these will be loaded with text instead of an icon. Revisit when icons are better
+        /*
         if (controlPanel.isPaused()){
-            this.setIcon(playImageIcon);
+            this.setText("PLAY");
         } else {
-            this.setIcon(pauseImageIcon);
+            this.setText("PAUSE");
         }
+
+         */
     }
 }

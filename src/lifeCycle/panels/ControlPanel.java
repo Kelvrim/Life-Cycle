@@ -56,8 +56,9 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
         this.add(actionPanel, BorderLayout.WEST);
 
         // Button misc settings
-        pauseButton.setPreferredSize(new Dimension(30, 30));
-        reset.setPreferredSize(new Dimension(30, 30));
+        //TODO: come back when icons are fixed
+        //pauseButton.setPreferredSize(new Dimension(30, 30));
+        //reset.setPreferredSize(new Dimension(30, 30));
 
         pauseButton.setFocusable(false);
         reset.setFocusable(false);
