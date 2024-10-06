@@ -1,3 +1,5 @@
+package lifeCycle.panels;
+
 import java.awt.*;
 
 public class GridColors {

@@ -1,12 +1,19 @@
+package lifeCycle;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * A class for creating the Cell grid. Handles dimensions and some logic (such as
- * counting the surrounding living neighbors of a Cell.
+ * A class for creating the lifeCycle.Cell grid. Handles dimensions and some logic (such as
+ * counting the surrounding living neighbors of a lifeCycle.Cell.
  */
 public class Grid {
     /** PROPERTIES ********************************************************************/
     private int rows;
     private int columns;
     private Cell[][] grid;
+    public static Set<Cell> changedCells = new HashSet<>(); // Track the cells that have changed in the previous generation
+
 
     public final int MIN_ALLOWED_ROWS = 10;
     public final int MIN_ALLOWED_COLUMNS = 10;
@@ -23,7 +30,7 @@ public class Grid {
         this.columns = columns;
         grid = new Cell[rows][columns];
 
-        fillGridWithCells();
+        initializeGrid();
         setToDefaultOrientation();
         countAllLivingCells(grid);
     }
@@ -47,36 +54,66 @@ public class Grid {
 
     /** MUTATORS **********************************************************************/
     /**
+     * O(9^n) time complexity. Fine for now, needs to be improved
+     *
      * Handles the next iteration of the grid. Uses a second grid as a buffer
      * to prevent mistakes with livingNeighbors.
+     *
+     * Goes through each cell in the grid, and for each cell checks all 9 of its neighbors
+     *
      * @param grid
      */
     public void nextGeneration(Cell[][] grid){
         // First reset livingNeighborCount of every cell to 0, then recount for this iteration
-        resetLivingNeighborsCountOfAllCells(grid);
-        countAllLivingCells(grid);
+        //countAllLivingCells(grid);
 
-        // It's not really redundant I promise
-        Cell[][] futureGrid = grid;
+        /*
+        Cell[][] futureGrid = grid.clone();
 
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 Cell currentCell = grid[i][j];
                 Cell futureCell = futureGrid[i][j];
 
+                // Is the Cell changing states this round?
+                if (currentCell.isLiving() != RuleSet.classicLife(currentCell)){
+                    trackChangedCellAndNeighbors(grid, currentCell, i, j);
+                } else {
+                    changedCells.remove(currentCell);
+                }
+
                 // Judges currentCell with the classic ruleset, and applies the result to futureCell
                 futureCell.setLiving(RuleSet.classicLife(currentCell));
             }
         }
+        */
+
+        countNeighborsOfAllUpdatedCells(grid);
+
+
+        // First prepare each cell (give it a next state)
+        for(int i = 0; i < this.rows; i++) {
+            for(int j = 0; j < this.columns; j++) {
+                this.grid[i][j].prepareUpdate();
+            }
+        }
+
+        // Then actually advance them, once all the new states are computed
+        for(int i = 0; i < this.rows; i++) {
+            for(int j = 0; j < this.columns; j++) {
+                this.grid[i][j].update();
+            }
+        }
+
     }
 
     /**
      * Fills the grid with cells, all of them dead by default
      */
-    private void fillGridWithCells(){
+    private void initializeGrid(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
-                grid[i][j] = new Cell(false);
+                grid[i][j] = new Cell(false, i, j);
             }
         }
     }
@@ -108,28 +145,74 @@ public class Grid {
         grid[8][2].setLiving(true);
     }
 
+    public void clearScreen(){
+        // loop through each cell in the grid
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                Cell cell = getCell(row, col);
+                cell.setLiving(false);
+            }
+        }
+    }
+
     /** HELPERS ***********************************************************************/
     /**
      * Iterates through the grid and calls countSurroundingLivingCells, which updates
      * the livingNeighbors count of the cell in question
-     * @param grid i rows and j columns
      */
-    public void countAllLivingCells(Cell[][] grid){
+    private void countAllLivingCells(Cell[][] grid){
+        /*
+        for (Cell cell: changedCells) {
+            countSurroundingLivingCells(grid, cell.getiPos(), cell.getjPos());
+        }
+         */
+
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 countSurroundingLivingCells(grid, i, j);
             }
         }
+
+    }
+
+    public void countNeighborsOfAllUpdatedCells(Cell[][] grid) {
+        for(int i = 0; i < this.rows; i++) {
+            for(int j = 0; j < this.columns; j++) {
+                if (this.grid[i][j].getPreviousState() != this.grid[i][j].isLiving()){
+                    countSurroundingLivingCells(grid, i, j);
+
+                    countNeighborsOfSurroundingCells(grid, i, j);
+
+                }
+            }
+        }
+    }
+
+    private void countNeighborsOfSurroundingCells(Cell[][] grid, int i, int j) {
+        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+            for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
+                int newRow = i + rowOffset;
+                int newColumn = j + columnOffset;
+
+                // Check if new position is contained in the grid
+                if (isValidPosition(newRow, newColumn)) {
+                    countSurroundingLivingCells(grid, newRow, newColumn);
+                }
+            }
+        }
     }
 
     /**
-     * Given the i and j location of a living Cell on grid, this counts its surrounding
-     * living Neighbors and updates the livingNeighbors property of the Cell at [i][j]
+     * Given the i and j location of a living lifeCycle.Cell on grid, this counts its surrounding
+     * living Neighbors and updates the livingNeighbors property of the lifeCycle.Cell at [i][j]
      * @param grid  i rows and j columns
      * @param i     outer array coordinate of the cell in question
      * @param j     inner array coordinate of the cell in question
      */
     public void countSurroundingLivingCells(Cell[][] grid, int i, int j) {
+
+        int count = 0;
+
         // Iterates through each surrounding cell including the current cell
         for (int rowOffset = -1; rowOffset <= 1; rowOffset++){
             for (int columnOffset = -1; columnOffset <= 1; columnOffset++){
@@ -137,18 +220,26 @@ public class Grid {
                 int newColumn = j + columnOffset;
 
                 // Check if new position is contained in the grid
-                if ((newRow >= 0 && newRow < rows) && (newColumn >= 0 && newColumn < columns)){
+                if (isValidPosition(newRow, newColumn)){
                     // Then, if the cell at the new position is living
                     if (grid[newRow][newColumn].isLiving()){
-                        grid[i][j].incrementLivingNeighbors();
+                        count++;
                     }
                 }
+                grid[i][j].setLivingNeighbors(count);
             }
         }
         if (grid[i][j].isLiving()){
             // Since the cell in question is hit too, we decrement it once (if living)
             grid[i][j].decrementLivingNeighbors();
         }
+    }
+
+    private boolean isValidPosition(int newRow, int newColumn) {
+        if ((newRow >= 0 && newRow < rows) && (newColumn >= 0 && newColumn < columns)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -164,4 +255,14 @@ public class Grid {
         }
     }
 
+    private void trackChangedCellAndNeighbors(Cell[][] grid, Cell currentCell, int i, int j) {
+        changedCells.add(currentCell);
+        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+            for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
+                if (isValidPosition(rowOffset, columnOffset)){
+                    changedCells.add(grid[i + rowOffset][j + columnOffset]);
+                }
+            }
+        }
+    }
 }

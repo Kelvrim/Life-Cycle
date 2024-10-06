@@ -1,6 +1,13 @@
+package lifeCycle.panels;
+
+import lifeCycle.*;
+import lifeCycle.actions.*;
+import lifeCycle.buttons.PauseButton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class ControlPanel extends JPanel implements MouseListener, ActionListener {
 
@@ -9,49 +16,58 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
     private boolean paused = true;
     private boolean eraser;
 
+    // lifeCycle.Actions
+    PauseAction pauseAction;
+    ClearScreen clearAction;
+    ToggleEraser toggleEraserAction;
+
     // Buttons
-    JButton startStop = new JButton(new ImageIcon("resources/pauseLogo.png"));
+    PauseButton pauseButton = new PauseButton(this);
     JButton reset = new JButton("RESET");
 
-    // Actions
-    PauseAction pauseAction = new PauseAction();
-    ClearAction clearAction = new ClearAction();
-    ToggleEraserAction toggleEraserAction = new ToggleEraserAction();
-
     // References to other Objects and Classes
-    private static Grid grid; // Reference to the Grid object
+    private static Grid grid; // Reference to the lifeCycle.Grid object
 
     /** CONSTRUCTOR **********************************************************************************/
-    public ControlPanel(Grid grid){
-        this.grid = grid;
+    public ControlPanel(Grid grid) throws IOException {
+        ControlPanel.grid = grid;
         addMouseListener(this);
 
-        add(startStop);
+        // Construct all abstract action objects
+        pauseAction = new PauseAction(this);
+        clearAction = new ClearScreen(this, grid);
+        toggleEraserAction = new ToggleEraser(this);
+
+        // Add buttons
+        add(pauseButton);
         add(reset);
 
-        startStop.setPreferredSize(new Dimension(300, 300));
+        // Button misc settings
+        //pauseButton.setPreferredSize(new Dimension(300, 300));
         reset.setPreferredSize(new Dimension(30, 30));
 
+        //pauseButton.setFocusable(false);
+        reset.setFocusable(false);
 
         // Button logic
-        startStop.addActionListener(new ActionListener() {
+        /*
+        pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 paused = !paused;
             }
         });
 
+         */
+
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ClearAction.clearScreen();
-
+                grid.clearScreen();
             }
         });
 
-        startStop.setFocusable(false);
-        reset.setFocusable(false);
-
+        // Add actions to input maps (certain keys trigger actions)
         this.getInputMap().put(KeyStroke.getKeyStroke(' '), "pauseAction");
         this.getActionMap().put("pauseAction", pauseAction);
 
@@ -60,6 +76,15 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
 
         this.getInputMap().put(KeyStroke.getKeyStroke('e'), "toggleEraserAction");
         this.getActionMap().put("toggleEraserAction", toggleEraserAction);
+    }
+
+    /** MUTATORS **********************************************************************************/
+    public void togglePause(){
+        paused = !paused;
+    }
+
+    public void toggleEraser(){
+        eraser = !eraser;
     }
 
     /** ACCESSORS **********************************************************************************/
@@ -100,37 +125,5 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
     @Override
     public void actionPerformed(ActionEvent e) {
 
-    }
-
-    /** ACTION CLASSES *************************************************************************************/
-    public class PauseAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            paused = !paused;
-        }
-    }
-
-    public class ToggleEraserAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            eraser = !eraser;
-        }
-    }
-
-    public class ClearAction extends AbstractAction {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            clearScreen();
-        }
-
-        public static void clearScreen(){
-            // loop through each cell in the grid
-            for (int row = 0; row < grid.getRows(); row++) {
-                for (int col = 0; col < grid.getColumns(); col++) {
-                    Cell cell = grid.getCell(row, col);
-                    cell.setLiving(false);
-                }
-            }
-        }
     }
 }

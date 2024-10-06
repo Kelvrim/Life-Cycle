@@ -1,10 +1,15 @@
+package lifeCycle.panels;
+
+import lifeCycle.Cell;
+import lifeCycle.Grid;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class GridPanel extends JPanel implements MouseListener, MouseMotionListener{
     /** PROPERTIES ****************************************************************************************/
-    private final Grid grid; // Reference to the Grid object
+    private final Grid grid; // Reference to the lifeCycle.Grid object
     private final ControlPanel controlPanel;
     private final int CELL_SIZE = 10;
 
@@ -51,7 +56,7 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
     /** HELPERS ***********************************************************************/
     /**
      * prints as text to system. Mainly used for testing
-     * @param grid 2D Grid of Cell objects
+     * @param grid 2D lifeCycle.Grid of lifeCycle.Cell objects
      */
     public static void printGrid(Cell[][] grid) {
         int width = grid.length;
@@ -71,6 +76,8 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
+
+
     /** MOUSE LISTENER METHODS **********************************************************************************/
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -78,6 +85,8 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
         cellUnderMouse = grid.getCell(e.getY() / CELL_SIZE , e.getX() / CELL_SIZE);
 
         cellUnderMouse.switchLiving();
+        cellUnderMouse.prepareUpdate();
+        Grid.changedCells.add(cellUnderMouse);
         repaint();
     }
 
@@ -108,11 +117,8 @@ public class GridPanel extends JPanel implements MouseListener, MouseMotionListe
         cellUnderMouse = grid.getCell(e.getY() / CELL_SIZE , e.getX() / CELL_SIZE);
 
         //cellUnderMouse.switchLiving();
-        if (controlPanel.getEraserStatus()){
-            cellUnderMouse.setLiving(false);
-        } else {
-            cellUnderMouse.setLiving(true);
-        }
+        cellUnderMouse.setPreviousState(cellUnderMouse.isLiving());
+        cellUnderMouse.setLiving(!controlPanel.getEraserStatus());
         repaint();
     }
 

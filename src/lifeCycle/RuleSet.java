@@ -1,3 +1,5 @@
+package lifeCycle;
+
 /**
  * Contains various alternate rulesets for Conways Game Of Life as
  * individual functions. Some well known alternate rules can be found at
