@@ -73,7 +73,7 @@ public class Cell {
     }
 
     public void prepareUpdate() {
-        newState = RuleSet.classicLife(this);
+        newState = Ruleset.applyCurrentRuleset(this);
     }
 
     public void update() {

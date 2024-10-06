@@ -1,8 +1,5 @@
 package lifeCycle;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * A class for creating the lifeCycle.Cell grid. Handles dimensions and some logic (such as
  * counting the surrounding living neighbors of a lifeCycle.Cell.
@@ -12,8 +9,6 @@ public class Grid {
     private int rows;
     private int columns;
     private Cell[][] grid;
-    public static Set<Cell> changedCells = new HashSet<>(); // Track the cells that have changed in the previous generation
-
 
     public final int MIN_ALLOWED_ROWS = 10;
     public final int MIN_ALLOWED_COLUMNS = 10;
@@ -64,30 +59,6 @@ public class Grid {
      * @param grid
      */
     public void nextGeneration(Cell[][] grid){
-        // First reset livingNeighborCount of every cell to 0, then recount for this iteration
-        //countAllLivingCells(grid);
-
-        /*
-        Cell[][] futureGrid = grid.clone();
-
-        for (int i = 0; i < rows; i++){
-            for (int j = 0; j < columns; j++){
-                Cell currentCell = grid[i][j];
-                Cell futureCell = futureGrid[i][j];
-
-                // Is the Cell changing states this round?
-                if (currentCell.isLiving() != RuleSet.classicLife(currentCell)){
-                    trackChangedCellAndNeighbors(grid, currentCell, i, j);
-                } else {
-                    changedCells.remove(currentCell);
-                }
-
-                // Judges currentCell with the classic ruleset, and applies the result to futureCell
-                futureCell.setLiving(RuleSet.classicLife(currentCell));
-            }
-        }
-        */
-
         countNeighborsOfAllUpdatedCells(grid);
 
 
@@ -161,28 +132,19 @@ public class Grid {
      * the livingNeighbors count of the cell in question
      */
     private void countAllLivingCells(Cell[][] grid){
-        /*
-        for (Cell cell: changedCells) {
-            countSurroundingLivingCells(grid, cell.getiPos(), cell.getjPos());
-        }
-         */
-
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
-                countSurroundingLivingCells(grid, i, j);
+                countSurroundingLivingNeighbors(grid, i, j);
             }
         }
-
     }
 
     public void countNeighborsOfAllUpdatedCells(Cell[][] grid) {
         for(int i = 0; i < this.rows; i++) {
             for(int j = 0; j < this.columns; j++) {
-                if (this.grid[i][j].getPreviousState() != this.grid[i][j].isLiving()){
-                    countSurroundingLivingCells(grid, i, j);
-
+                if (grid[i][j].getPreviousState() != grid[i][j].isLiving()){
+                    countSurroundingLivingNeighbors(grid, i, j);
                     countNeighborsOfSurroundingCells(grid, i, j);
-
                 }
             }
         }
@@ -196,20 +158,20 @@ public class Grid {
 
                 // Check if new position is contained in the grid
                 if (isValidPosition(newRow, newColumn)) {
-                    countSurroundingLivingCells(grid, newRow, newColumn);
+                    countSurroundingLivingNeighbors(grid, newRow, newColumn);
                 }
             }
         }
     }
 
     /**
-     * Given the i and j location of a living lifeCycle.Cell on grid, this counts its surrounding
-     * living Neighbors and updates the livingNeighbors property of the lifeCycle.Cell at [i][j]
+     * Given the i and j location of a living Cell on grid, this counts its surrounding
+     * living Neighbors and updates the livingNeighbors property of the Cell at [i][j]
      * @param grid  i rows and j columns
      * @param i     outer array coordinate of the cell in question
      * @param j     inner array coordinate of the cell in question
      */
-    public void countSurroundingLivingCells(Cell[][] grid, int i, int j) {
+    public void countSurroundingLivingNeighbors(Cell[][] grid, int i, int j) {
 
         int count = 0;
 
@@ -242,27 +204,4 @@ public class Grid {
         return false;
     }
 
-    /**
-     * When recounting the livingNeighbors of a cell on future generations, we need to start at zero.
-     * This iterates through each cel and resets the livingNeighbor count to zero
-     * @param grid i rows and j columns
-     */
-    public void resetLivingNeighborsCountOfAllCells(Cell[][] grid){
-        for (int i = 0; i < rows; i++){
-            for (int j = 0; j < columns; j++){
-                grid[i][j].setLivingNeighbors(0);
-            }
-        }
-    }
-
-    private void trackChangedCellAndNeighbors(Cell[][] grid, Cell currentCell, int i, int j) {
-        changedCells.add(currentCell);
-        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
-            for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
-                if (isValidPosition(rowOffset, columnOffset)){
-                    changedCells.add(grid[i + rowOffset][j + columnOffset]);
-                }
-            }
-        }
-    }
 }
