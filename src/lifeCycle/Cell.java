@@ -1,29 +1,25 @@
 package lifeCycle;
 
 /**
- * This class is currently UNIMPLEMENTED. It has certain properties and functions that
- * clash with existing ones in lifeCycle.Main.
+ * Class for each cell within the grid. They only have two states: alive or dead. These are decided
+ * by how many living neighbors the individual cell has, which depends on which rule from Ruleset is
+ * being used.
  */
 
 public class Cell {
 
     /** PROPERTIES ********************************************************************/
     private boolean isLiving;
-    private int livingNeighbors = 0;
+    private int livingNeighbors = 0;    // Each cell (except the border cells) have 8 neighbors
 
-    private boolean previousState;
-    private boolean newState;
+    private boolean previousState;      // The cells previous isLiving state. Used to track recently changed cells
+    private boolean newState;           // The cells state on the next generation
 
-    private int iPos;
-    private int jPos;
+    private int age = 0;                // How many iterations the cell has been alive for
 
     /** CONSTRUCTORS ******************************************************************/
-    public Cell(){}
-
-    public Cell(boolean isLiving, int i, int j){
+    public Cell(boolean isLiving){
         this.isLiving = isLiving;
-        iPos = i;
-        jPos = j;
     }
 
     /** ACCESSORS *********************************************************************/
@@ -43,12 +39,8 @@ public class Cell {
         return previousState;
     }
 
-    public int getiPos(){
-        return  iPos;
-    }
-
-    public int getjPos(){
-        return  jPos;
+    public int getAge(){
+        return age;
     }
 
     /** MUTATORS **********************************************************************/
@@ -80,16 +72,16 @@ public class Cell {
         this.previousState = this.isLiving;
         this.isLiving = this.newState;
     }
-    /*
-     * The following two functions are to be used when generating the next grid:
-     * incrementing the livingNeighbors property when a cell is detected to be
-     * alive.
-     */
-    public void incrementLivingNeighbors(){
-        livingNeighbors++;
-    }
 
-    public void decrementLivingNeighbors(){
-        livingNeighbors--;
+    /**
+     * If the current cell isLiving, we increment by one. Otherwise, the age is 0. This should be
+     * called on each new generation of the grid
+     */
+    public void determineAge() {
+        if (isLiving){
+            age++;
+        } else {
+            age = 0;
+        }
     }
 }

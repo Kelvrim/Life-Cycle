@@ -3,7 +3,7 @@ package lifeCycle;
 import lifeCycle.buttons.RulesetDropdown;
 
 /**
- * Contains various alternate rulesets for Conways Game Of Life as
+ * Contains various alternate rulesets for LifeCycle as
  * individual functions. Some well known alternate rules can be found at
  * 'https://conwaylife.com/wiki/List_of_Life-like_rules'
  *
@@ -26,9 +26,7 @@ public class Ruleset {
         };
     }
 
-    /**
-     * RULE COLLECTION
-     ************************************************************************************/
+    /** RULE COLLECTION ************************************************************************************/
     public static boolean conwayLife(Cell cell) {
         boolean isLiving = cell.isLiving();
         int livingNeighbors = cell.getLivingNeighbors();

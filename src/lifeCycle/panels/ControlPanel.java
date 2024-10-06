@@ -78,7 +78,7 @@ public class ControlPanel extends JPanel implements MouseListener, ActionListene
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                grid.clearScreen();
+                grid.clearGrid();
             }
         });
 

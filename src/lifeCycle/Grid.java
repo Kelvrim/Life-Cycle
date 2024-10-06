@@ -49,33 +49,50 @@ public class Grid {
 
     /** MUTATORS **********************************************************************/
     /**
-     * O(9^n) time complexity. Fine for now, needs to be improved
+     * Counts the neighbors of only the recently changed cells. Keeps track of this
+     * by comparing a cell's previous state with its current state. Then, in two passes,
+     * we set each cell's newState and update all oof them at once. If we were to update them
+     * without preparation first, it there would be a discrepancy between a cells livingNeighbor count
+     * and the actual alive neighbors surrounding it.
      *
-     * Handles the next iteration of the grid. Uses a second grid as a buffer
-     * to prevent mistakes with livingNeighbors.
-     *
-     * Goes through each cell in the grid, and for each cell checks all 9 of its neighbors
-     *
-     * @param grid
+     * @param grid Grid of Cell objects.
      */
     public void nextGeneration(Cell[][] grid){
+        // Count the neighbors of only recently changed Cells
         countNeighborsOfAllUpdatedCells(grid);
 
+        // Cells should be prepared first, then updated all at once
+        prepareUpdateForAllCells();
+        updateAllCells();
+    }
 
-        // First prepare each cell (give it a next state)
+    /**
+     * Goes through each and every Cell, and applies the selected Ruleset to its 
+     * newState. The Cell's age is also incremented if it's living
+     */
+    private void prepareUpdateForAllCells() {
         for(int i = 0; i < this.rows; i++) {
             for(int j = 0; j < this.columns; j++) {
-                this.grid[i][j].prepareUpdate();
+                Cell currentCell = grid[i][j];
+
+                currentCell.prepareUpdate();
+                currentCell.determineAge();
             }
         }
+    }
 
-        // Then actually advance them, once all the new states are computed
+    /**
+     * For all Cells, the current isLiving status is inherited by previousState
+     * and isLiving inherits newState
+     */
+    private void updateAllCells() {
         for(int i = 0; i < this.rows; i++) {
             for(int j = 0; j < this.columns; j++) {
-                this.grid[i][j].update();
+                Cell currentCell = grid[i][j];
+
+                currentCell.update();
             }
         }
-
     }
 
     /**
@@ -84,40 +101,32 @@ public class Grid {
     private void initializeGrid(){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
-                grid[i][j] = new Cell(false, i, j);
+                grid[i][j] = new Cell(false);
             }
         }
     }
 
     /**
-     * sets the grid to default orientation, which is determined in this function
+     * sets up a few prebuilt patterns to get things started
      */
     private void setToDefaultOrientation() {
         // 2X2 Upside down L in the top left
-        grid[0][0].setLiving(true);
-        grid[0][1].setLiving(true);
-        grid[1][0].setLiving(true);
+        Patterns.upsideDownL(grid, 0, 0);
 
         // 2X2 backwards L in the top left. forms a blinker structure with the other L
-        grid[3][3].setLiving(true);
-        grid[2][3].setLiving(true);
-        grid[3][2].setLiving(true);
+        Patterns.backwardsL(grid, 3, 3);
 
         // 1X3 Horizontal line in the right middle
-        grid[5][6].setLiving(true);
-        grid[5][7].setLiving(true);
-        grid[5][8].setLiving(true);
+        Patterns.propeller(grid, 5, 7);
 
         // Travelling blip
-        grid[6][1].setLiving(true);
-        grid[6][3].setLiving(true);
-        grid[7][2].setLiving(true);
-        grid[7][3].setLiving(true);
-        grid[8][2].setLiving(true);
+        Patterns.travellingBlip(grid,7, 2);
     }
 
-    public void clearScreen(){
-        // loop through each cell in the grid
+    /**
+     * Set each Cell.isLiving to false
+     */
+    public void clearGrid(){
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 Cell cell = getCell(row, col);
@@ -182,7 +191,7 @@ public class Grid {
                 int newColumn = j + columnOffset;
 
                 // Check if new position is contained in the grid
-                if (isValidPosition(newRow, newColumn)){
+                if (isValidPosition(newRow, newColumn) && grid[newRow][newColumn] != grid[i][j]){
                     // Then, if the cell at the new position is living
                     if (grid[newRow][newColumn].isLiving()){
                         count++;
@@ -190,10 +199,6 @@ public class Grid {
                 }
                 grid[i][j].setLivingNeighbors(count);
             }
-        }
-        if (grid[i][j].isLiving()){
-            // Since the cell in question is hit too, we decrement it once (if living)
-            grid[i][j].decrementLivingNeighbors();
         }
     }
 

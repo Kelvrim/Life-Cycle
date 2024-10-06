@@ -20,6 +20,6 @@ public class ClearScreen extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        grid.clearScreen();
+        grid.clearGrid();
     }
 }
