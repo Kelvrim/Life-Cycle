@@ -11,7 +11,7 @@ rulesets (including Conways Game of Life) is that they are technically undecidab
 there is no way to prove it mathematically. In more formal terms: given an initial pattern and a later pattern, 
 no algorithm exists that can tell whether the later pattern is ever going to appear.
 
-For more information, strongly consider reading up on [cellular automata](https://en.wikipedia.org/wiki/Cellular_automaton). There's a
+For more information, consider reading up on [cellular automata](https://en.wikipedia.org/wiki/Cellular_automaton). There's a
 lot of really cool stuff, including that Conways Game of Life is Turing Complete!
 
 On another note, to keep this respectful to Conway, he actually really hated his Game of Life. He felt strongly that it's popularity
