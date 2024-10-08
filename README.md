@@ -37,8 +37,11 @@ his other works [here](https://en.wikipedia.org/wiki/John_Horton_Conway)
 - Importing custom rules
 
 
-## REALLY Later down the road
-- 3D automata!
-- Hex grids!
+## (very) Lofty Ideas for Future Features
+- 3D automata
+- Hex grids
+- Multiple rulesets at once?
+    - Cells having rulesets as properties, and 'infecting' cells they touch
+- Motion capture drawing
   
 
