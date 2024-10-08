@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         final int ROWS = 75;         // rows and columns for the grid
         final int COLUMNS = 125;
-        final int DELAY = 20;       // the higher the delay, the slower cells move | milliseconds
+        final int DELAY = 40;       // the higher the delay, the slower cells move | milliseconds
 
 
         Grid grid = new Grid(ROWS, COLUMNS);

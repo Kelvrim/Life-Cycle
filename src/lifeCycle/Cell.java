@@ -85,5 +85,9 @@ public class Cell {
         } else {
             age = 0;
         }
+
+        if (age > 100){
+            age = 100;
+        }
     }
 }
