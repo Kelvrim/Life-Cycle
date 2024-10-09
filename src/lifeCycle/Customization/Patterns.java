@@ -22,11 +22,13 @@ public class Patterns {
      * @param j j position of Cell
      */
     public static void travellingBlip(Cell[][] grid, int i, int j) {
+        if (isInBounds(grid, i, j, 1)) {
             grid[i - 1][j - 1].setLiving(true);
             grid[i - 1][j + 1].setLiving(true);
             grid[i][j].setLiving(true);
             grid[i][j + 1].setLiving(true);
             grid[i + 1][j].setLiving(true);
+        }
     }
 
     /**
@@ -37,9 +39,11 @@ public class Patterns {
      * @param j j position of Cell
      */
     public static void propeller(Cell[][] grid, int i, int j) {
-        grid[i][j - 1].setLiving(true);
-        grid[i][j].setLiving(true);
-        grid[i][j + 1].setLiving(true);
+        if (isInBounds(grid, i, j, 1)) {
+            grid[i][j - 1].setLiving(true);
+            grid[i][j].setLiving(true);
+            grid[i][j + 1].setLiving(true);
+        }
     }
 
     /**
@@ -50,9 +54,11 @@ public class Patterns {
      * @param j j position of Cell
      */
     public static void backwardsL(Cell[][] grid, int i, int j) {
-        grid[i][j].setLiving(true);
-        grid[i - 1][j].setLiving(true);
-        grid[j][i - 1].setLiving(true);
+        if (isInBounds(grid, i, j, 1)) {
+            grid[i][j].setLiving(true);
+            grid[i - 1][j].setLiving(true);
+            grid[j][i - 1].setLiving(true);
+        }
     }
 
     /**
@@ -63,8 +69,19 @@ public class Patterns {
      * @param j j position of Cell
      */
     public static void upsideDownL(Cell[][] grid, int i, int j) {
-        grid[i][j].setLiving(true);
-        grid[i][j + 1].setLiving(true);
-        grid[i + 1][j].setLiving(true);
+        if (isInBounds(grid, i, j, 1)) {
+            grid[i][j].setLiving(true);
+            grid[i][j + 1].setLiving(true);
+            grid[i + 1][j].setLiving(true);
+        }
+    }
+
+    /** HELPERS **************************************************************************************/
+    private static boolean isInBounds(Cell[][] grid, int i, int j, int maxOffset) {
+        if ((i - maxOffset >= 0 && i + maxOffset < grid.length)
+                && (j - maxOffset >= 0 && j + maxOffset < grid[0].length)) {
+            return true;
+        }
+        return false;
     }
 }
