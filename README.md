@@ -15,7 +15,7 @@ For more information, consider reading up on [cellular automata](https://en.wiki
 lot of really cool stuff, including that Conways Game of Life is Turing Complete!
 
 On another note, to keep this respectful to Conway, he actually really hated his Game of Life. He felt strongly that its popularity
-distracted people from his more impactful and interesting work. So, if you love mathematics and have the time, read more about 
+distracted people from his more impactful and interesting work. So, if you love math and have the time, read more about 
 his other works [here](https://en.wikipedia.org/wiki/John_Horton_Conway)
 
 
